@@ -1,0 +1,17 @@
+{% extends 'blog/base.html' %}
+
+
+{% block content %}
+	{% for post in posts %}
+		<div class="post">
+		<h2><a href="{% url 'blog:post_detail' pk=post.pk %}">{{post.title}}</a></h2>
+			<div class="date">
+				<p>发布日期: {{post.published_date}}</p>
+			</div>
+				<p>作者：{{post.author}}</p>
+				<p>{{ post.text|truncatewords:"10" }}</p>
+		</div>
+		<p><a href="{% url 'blog:post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}</a></p> 
+	{% endfor %}
+{% endblock %}
+
