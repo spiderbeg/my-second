@@ -4,43 +4,60 @@
 	<div class="post">
 		{% if post.published_date %}
 			<div class="date">
-				{% if user.is_authenticated  %}
-					{% if user.get_username == 'spiderbeg' %}
-						<a class="btn btn-default" href="{% url 'blog:post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
-						{{ post.author }}
-						{{ post.published_date}}
-					{% endif %}
+
+
+				{% if post.author == request.user  %}
+					<a class="btn btn-default" href="{% url 'blog:post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+					<a	class="btn	btn-default"	href="{%	url	'blog:post_edit'	pk=post.pk	%}"><span	class="glyphicon	glyphicon-pencil"></span></a>
+					{{ post.author }}
+					{{ post.published_date}}
+					
+
 				{% else %}
             	<a href="{% url 'login' %}" class="top-menu"><span class="glyphicon glyphicon-lock"></span></a>
         		{% endif %}
-
-
+        	
+        		{% if user.is_authenticated %}
+        			<p><a class="btn btn-default" href="{% url 'blog:add_comment_to_post' pk=post.pk %}">comment</a></p>
+        		{% endif %}
+        		
+        	
 			</div>
 		{% else %}
-			
+
+
+				{% if post.author == request.user  %}
 				<a class="btn btn-default" href="{% url 'blog:post_publish' pk=post.pk %}" >Publish</a>
-				{% if user.get_username == 'spiderbeg' %}
 				<a class="btn btn-default" href="{% url 'blog:post_remove_draft' pk=post.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
 				{% endif %}
+	
+
 		{% endif %}
+
+	</div>
+
 		<h1>{{ post.title }}</h1>
 		<p>作者：{{ post.author }}</p>
 		<p>{{ post.text|linebreaksbr }}</p>
-
-		<div>
-
-		<hr>
-    	
-<a class="btn btn-default" href="{% url 'blog:add_comment_to_post' pk=post.pk %}">comment</a>
-{% for comment in post.comments.all %}
-    <div class="comment">
-        <div class="date">{{ comment.published_date1 }}</div>
-        <strong>评论员：{{ comment.author1 }}</strong>
-        <p>内容：{{ comment.talk|linebreaks }}</p>
-    </div>
-
-{% empty %}
-    <p>No comments here yet :(</p>
-{% endfor %}
+		
+		{% for comment in post.comments.all %}
+			{% if post.author == request.user or comment.author2 == request.user %}
+			<div class="comment">
+			    <div class="date">
+			    {{ comment.published_date1 }}
+			    <a class="btn btn-default" href="{% url 'blog:comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+				</div>
+			</div>
+            {% endif %}
+			
+			    <strong>评论员：{{ comment.author2 }}</strong>
+			    <p>内容：{{ comment.talk|linebreaks }}</p>
+			
+				<hr>
+		    	
+		{% empty %}
+		    <p>No comments here yet :(</p>
+		{% endfor %}
+		
 
 {% endblock %}

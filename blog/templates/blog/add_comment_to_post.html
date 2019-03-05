@@ -2,6 +2,7 @@
 
 {% block content %}
     <h1>New comment</h1>
+    <p> <strong>评论员：{{ comment.author2 }}</strong>此时没有post，暂不知user</p>
     <form method="POST" class="post-form">{% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Send</button>

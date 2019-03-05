@@ -13,6 +13,6 @@ class Comment1Form(forms.ModelForm):
 
 	class Meta:#告诉django哪个模型使用这个表单
 		model = Comment
-		fields = ('author1', 'talk',)
+		fields = ('talk',)
 
 			
