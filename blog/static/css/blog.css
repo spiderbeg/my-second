@@ -55,13 +55,3 @@ h1 a {
 	font-family:'Lobster',	cursive;
 	color:	#828282;
 }
-.thumb {
-    -webkit-transition-duration: 0.4s; /* Safari */
-    transition-duration: 0.4s;
-}
-
-.thumb:focus {
-    background-color: #4CAF50; /* Green */
-    color: white;
-}
-...

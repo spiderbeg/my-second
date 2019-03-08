@@ -5,7 +5,12 @@
 		<div>
 		<h2>{{ post.title }}</h2>
 		<div><!--点赞-->
-		<p>点赞{{ vote1 }}<a class="thumb" href="{% url 'blog:vote' pk=post.pk %}"><span class="glyphicon glyphicon-thumbs-up"></span></a></p>
+		
+			{% if status == 0 %}
+			<p>点赞{{ vote1 }}<a class="thumb1" href="{% url 'blog:vote' pk=post.pk %}"><span class="glyphicon glyphicon-thumbs-up"></span></a></p>
+			{% else %}
+			<p>点赞{{ vote1 }}<a class="thumb2" href="{% url 'blog:vote' pk=post.pk %}"><span class="glyphicon glyphicon-ok"></span></a></p>
+			{% endif %}
 		</div>
 		<br/>
 

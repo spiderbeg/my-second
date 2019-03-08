@@ -37,7 +37,9 @@ def post_detail(request, pk):#内容详细页面，每打开一次post需要调�
 	post = get_object_or_404(Post, pk=pk)#pk主键
 	post.increase_views()#调用post模型中的increase_views函数记录阅读量
 	vote1 = Votes.objects.filter(status=True,post=pk).count()#在一篇文章下的点赞数量
-	return render(request, 'blog/post_detail.html', {'post':post,'vote1':vote1})#第三个参数为传递进模板的参数
+	status = Votes.objects.filter(post=pk, author3=request.user,status=True).count()
+	#print('2132312',status)
+	return render(request, 'blog/post_detail.html', {'post':post,'vote1':vote1,'status':status})#第三个参数为传递进模板的参数
 
 @login_required
 def post_new(request):#新建草稿并保存
