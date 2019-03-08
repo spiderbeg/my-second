@@ -32,7 +32,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
-	post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments', default=True)#models.ForeignKey中的related_name选项允许我们在Post模型中连接 comments
+	post = models.ForeignKey('blog.Post', on_delete=models.CASCADE, related_name='comments', default=True)#models.ForeignKey中的related_name选项允许我们在Post模型中连接 comments，即对应Post模型主键
 	author2 = models.ForeignKey('auth.User', on_delete=models.CASCADE, default=True)
 	author1 = models.CharField(max_length=200)
 	talk = models.TextField()

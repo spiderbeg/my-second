@@ -12,11 +12,27 @@ from .forms import PostForm, Comment1Form
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
 
+#-----------Queryset---------------------------------------------------------
+#Queryset是model类对应的实例集合，即数据库对应表的子集，可称查询集
 #------------POST------------------------------------------------------------
+
+def post_list(request):
+	posts = Post.objects.filter(published_date__lte=timezone.now())
+	#print('fgsdfg',posts.objects.all())#会报错，posts是queryset而非对象
+	for post in posts:
+		vote2 = Votes.objects.filter(status=True, post=post.pk).count()#点赞量
+		post.vote = vote2
+		#print("123333333	",vote2)
+		post.save(update_fields=['vote'])
+	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-vote')
+	return render(request, 'blog/post_list.html', {'posts':posts})
+
+
+'''
 def post_list(request):#文章列表
 	posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('-views')# - 表示反排从大到小排序，
 	return render(request, 'blog/post_list.html', {'posts':posts})
-
+'''
 def post_detail(request, pk):#内容详细页面，每打开一次post需要调用一次detail函数
 	post = get_object_or_404(Post, pk=pk)#pk主键
 	post.increase_views()#调用post模型中的increase_views函数记录阅读量
@@ -120,11 +136,14 @@ def comment_remove(request, pk):#删除评论
 
 #------点赞---------------------------------------------
 def vote(request, pk):#文章点赞,pk为文章传入的即POST模型中的pk
-	post1 = get_object_or_404(Post, pk=pk)
+	post1 = get_object_or_404(Post, pk=pk)#这是一个类
+	#print("233333333333333",type(post1))
 	#vote = post1.votes.all()
 	if request.user.is_authenticated:#不要轻易删除数据库记录，对数据库性能影响较大
 		#print("判断用户是否存在")
-		vote1,c = post1.votes.get_or_create(author3=request.user, post=post1.pk,)#post=post1.pk与post=post1，区别
+		vote1,c = post1.votes.get_or_create(author3=request.user, post=post1.pk,)#post=post1.pk与post=post1的区别.得到一个类
+		#print("erterter",post1.votes.filter(author3=request.user, post=post1.pk,))
+		#print("323452456",type(vote1))
 		if c == True:
 			#print("被创建")
 			return redirect('blog:post_detail',pk=pk)

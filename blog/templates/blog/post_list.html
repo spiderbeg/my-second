@@ -1,6 +1,7 @@
 {% extends 'blog/base.html' %}
 
 
+
 {% block content %}
 	{% for post in posts %}
 		<div class="post">
@@ -10,7 +11,7 @@
 			</div>
 				<p>作者：{{post.author}}</p>
 				<p>{{ post.text|truncatewords:"10" }}</p>
-				<p><a href="{% url 'blog:post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}  ; times: {{ post.views }} ; 喜爱人数: {{ post.votes.count }}</a></p>
+				<p><a href="{% url 'blog:post_detail' pk=post.pk %}">Comments: {{ post.comments.count }}  ; times: {{ post.views }} ; 喜爱人数: {{ post.vote }}</a></p>
 		</div>
 		
 	{% endfor %}
